@@ -4,7 +4,7 @@
 Application implements a fullstack Express Application with DB (MongoDB), authorizatiomn (JwT, with cookie)
 
 ## Current Development status
-![Dev Kanban Chart](./image/kanbanChart.PNG)
+![Dev Kanban Chart](./image/kanban.png)
 
 ## Mockup of Complete Application
 ![mockup using Lunacy App](./image/webpageMockup.png)
