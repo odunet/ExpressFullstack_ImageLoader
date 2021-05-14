@@ -1,0 +1,52 @@
+<!-- Note: Client available from Express Application: api/testCookieClient -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loader | {{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="../scripts.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        {{> header}}
+        <section class="card" id="landing">
+            <h2>
+                Welcome to the Express Image Loader
+            </h2>
+            <h3>
+                ver 1.1.0
+            </h3>
+            <form action="loader/../auth/register" method="POST" class="showcase-form" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Register.</legend>
+                    <div class="form-control" id="imageField">
+                        <img src="../image/avatar.png" alt="Upload Image" id="avatar">
+                        <input type="file" id="file" accept="image/*" name="photo">
+                    </div>
+                    <div class="form-control">
+                        <input type="text" name="firstName" placeholder="Firstname" id="fst">
+                    </div>
+                    <div class="form-control">
+                        <input type="text" name="lastName" placeholder="Lastname" id="lst">
+                    </div>
+                    <div class="form-control">
+                        <input type="text" name="userName" placeholder="Username" id="usr">
+                    </div>
+                    <div class="form-control">
+                        <input type="password" name="password" placeholder="Password" id="pwd">
+                    </div>
+                    <div class="form-control">
+                        <input type="checkbox" name="isAdmin" value='true' placeholder=id="isAdmin">
+                        <label for="isAdmin">isAdmin</label>
+                    </div>
+                    <input type="submit" name="submit" value="submit" class="btn" id="submitLogin">
+                </fieldset>
+            </form>
+        </section>
+    </div>
+</body>
+</html>

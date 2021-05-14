@@ -1,0 +1,33 @@
+<!-- Note: Client available from Express Application: api/testCookieClient -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loader | {{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="../scripts.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        {{> header}}
+        <section class="card" id="landing">
+            <h2>
+                Welcome to the Express Image Loader
+            </h2>
+            <h3>
+                ver 1.1.0
+            </h3>
+            <form action="loader/../login" method = "get">
+                <button type="submit" class="btn" value="Login">Login</button>
+            </form>
+            <form action="loader/../register" method = "get">
+                <button type="submit" class="btn" value="Register">Register</button>
+            </form>
+            <p id='flashMessage'>{{ message }}</p>
+        </section>
+    </div>
+</body>
+</html>

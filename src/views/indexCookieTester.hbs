@@ -1,0 +1,185 @@
+<!-- Note: Client available from Express Application: api/testCookieClient -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie</title>
+    <style>
+        body {
+            line-height: 32px;
+            width: 80%;
+            margin: auto;
+            text-align: left;
+            color: rgb(8, 3, 3);
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px;
+            width: 100%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            cursor: pointer;
+            color: var(--logo-color);
+            border: none;
+            border-radius: 5px;
+            margin: 20px;
+          }
+          
+        .btn-outline {
+        background-color: transparent;
+        border: 1px #fff solid;
+        }
+        
+        .btn:hover {
+        transform: scale(0.98);
+        }
+
+        #result {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+        }
+          
+    </style>
+</head>
+<body>
+    <h1>
+        Cookie Tester
+    </h1>
+    <p>Notes</p>
+    <ul>
+        <li>The <strong>From</strong> button sends a POST request to the client with the expected payload<br>
+            That is the {email: "email", password: "password"}.<br>
+            Response: JSON obeject with the user details and the Token.<br>
+            Token stored in both:
+            <ul>
+                <li>
+                    Header: {'x-auth-token'}
+                </li>
+                <li>
+                    cookie: {'x-auth-token'}
+                </li>
+            </ul></li>
+        <li>The <strong>To</strong> button sends a Get request to the client <strong>@route:</strong> <em>/api/testCookieResponse</em><br>
+            Response object: JSON {message: "Cookie Recieved"}, the cookie stored in client shouls also be logged in server using <em>req.cookies['x-auth-token']</em></li>
+    </ul>
+    <p><small>Hints:<ul>
+        <li>
+            Movement of cookies from server to client and the other way requires the following:
+            <ol>
+                <li>
+                    On server: The COR Options must be clearly defined. '*' is not allowed.
+                </li>
+                <li>
+                    On server: Cookie must be set to {httpOnly: true} is client JS should not access cookie.
+                </li>
+                <li>
+                    On server: Cookie must be set to {sameSite: 'none'} if the domain of server is different from client.
+                </li>
+                <li>
+                    On server: Cokkie must be set to {secret: true} is sameSite is set to 'none'. This restricts service to only <strong>HTTPS</strong> clients.
+                </li>
+                <li>
+                    On server: res.cookie is used to send cookie to client and req.cookie is used to intercept cookie sent from client in server.
+                </li>
+                <li>
+                    On server: In the CORS options, you need to add option {credentials: true}
+                </li>
+                <li>
+                    On client: In order to recieve the cookie, you need to add field {credentials: 'include'} in the api request (i.e. Fetch, Axios, etc)
+                </li>
+            </ol>
+        </li>
+        <li>
+            If cookie is required in client, you need option {credentials: true} set in Fetch. This will not allow wildcard CORs option i.e. <em>app.use(cors())</em> is not allowed.
+        </li>
+    </ul></small></p>
+    <div class="card">
+        <p id="result" style="display: none;"></p>
+        <button class="btn" id="btn">To Server (GET)</button>
+        <button class="btn" id="btn2">From Server (POST)</button>
+    </div>
+</body>
+<script>
+    //Set test cookie
+    document.cookie = "name=testCookie"
+
+    //Declare result object
+    let result = document.getElementById('result')
+
+
+    // @method: GET request to test /api/test
+    // @response: json {userObject, token}
+    let btn = document.getElementById("btn")
+    btn.addEventListener("click", async (e) =>{
+        result.style.display = 'none';
+        try {
+            let data = await fetch('http://localhost:5000/api/testCookieResponse', {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                },
+                credentials: 'include'
+            })
+
+            let response = await data.json();
+            console.log(response)
+        } catch (err) {
+            result.style.display = '';
+            result.innerHTML = `Server error, check endpoint at ${'http://localhost:5000/api/testCookieResponse'}`
+        }
+
+    })
+
+    // @method: POST request to test /api/testCookieResponse
+    // @response: JSON {message: "Cookie Recieved"}
+    let btn2 = document.getElementById("btn2")
+    btn2.addEventListener("click", async (e) =>{
+        result.style.display = 'none';
+        let _data = {
+            email: "odunet@odunet.com",
+            password: "starmanyou",
+        }
+    
+        try {
+            let data = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify(_data),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                },
+                credentials: 'include'
+            })
+
+            //Log headers
+            for(let entry of data.headers.entries()) {
+                console.log('header', entry);
+            }
+
+            let response = await data.json()
+            console.log(document.cookie)
+            console.log(response)     
+        } catch (err) {
+            result.style.display = '';
+            result.innerHTML = `Server error, check endpoint at ${'http://localhost:5000/api/testCookieResponse'}`
+        }
+        })
+</script>
+</html>

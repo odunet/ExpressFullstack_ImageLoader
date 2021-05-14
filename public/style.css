@@ -1,0 +1,185 @@
+body {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+}
+
+header {
+  margin-bottom: 50px;
+}
+
+nav {
+  width: 80%;
+  min-width: 300px;
+  margin: auto;
+  height: 100px;
+  height: 60px;
+  border-radius: 8px;
+  background: #d3d3d3;
+  box-shadow: 0px 2px 4px rgba(100, 100, 100, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav input {
+  height: 25px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  color: #201f1f;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  border: 0px;
+}
+
+.card {
+  background: #d3d3d3;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 20px;
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.profileHeader > img {
+  width: 200px;
+  height: auto;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.profileHeader > p {
+  margin: auto;
+  margin-bottom: 40px;
+}
+
+.profileTitle {
+  text-align: center;
+  margin: auto;
+}
+
+.profileField {
+  width: 70%;
+  height: 94px;
+  margin: auto;
+  border-radius: 8px;
+  background: #ebe6e6;
+}
+
+ul {
+  display: inline-block;
+}
+
+li {
+  text-align: left;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 30px;
+  cursor: pointer;
+  color: var(--logo-color);
+  border: none;
+  border-radius: 5px;
+  margin: 20px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px #fff solid;
+}
+
+.btn:hover {
+  transform: scale(0.98);
+}
+
+/* Form */
+.showcase-form {
+  margin: auto;
+  margin-top: 10px;
+  width: 60%;
+  padding: 40px;
+  padding-top: 10px;
+  z-index: 100;
+  animation: slideInFromReft 1s ease-in;
+}
+
+.showcase-form .form-control,
+.showcase-form2 .form-control {
+  margin: 30px 0;
+}
+
+.showcase-form input[type='text'],
+.showcase-form input[type='password'] {
+  border: 0;
+  border-bottom: 1px solid #b4becb;
+  width: 100%;
+  padding: 3px;
+  font-size: 16px;
+  border-radius: 10px;
+  height: 25px;
+}
+
+.showcase-form input:focus {
+  outline: none;
+}
+
+#imageField {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 80%;
+  margin: auto;
+  height: 120px;
+}
+
+#imageField > img {
+  width: 120px;
+  height: auto;
+  max-height: 130px;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+/* Profile header  */
+.profileTitle {
+  text-transform: capitalize;
+}
+
+/* Style flash message  */
+#flashMessage {
+  color: #248a46;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-decoration: underline;
+  font-size: 0.8em;
+}
+/* Animation */
+@keyframes slideInFromReft {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
