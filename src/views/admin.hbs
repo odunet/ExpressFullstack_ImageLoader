@@ -1,0 +1,54 @@
+<!-- Note: Client available from Express Application: api/testCookieClient -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loader | {{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="/scripts.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        {{> header}}
+        <section class="card">
+            <div class="profileHeader">
+                <div class="flex">
+                    <h2 class="profileTitle">
+                        {{ title }}'s Profile
+                    </h2>
+                    <p id="adminLogo">Admin</p>
+                </div>
+                <img src={{ image }} alt="Upload Image" id="avatar">
+                <p>
+                    <small>
+                        User created on: {{ time }}
+                    </small>
+                </p>
+            </div>
+            <div class="profileField">
+                <ul>
+                    <li>
+                        <strong>Name: </strong><em>{{ firstName }}</em>
+                    </li>
+                    <li>
+                        <strong>Last Name: </strong><em>{{ lastName }}</em>
+                    </li>
+                    <li>
+                        <strong>Username: </strong><em>{{ title }}</em>
+                    </li>
+                </ul>
+            </div>
+            {{!-- Show or unshow users  --}}
+            <button class="btn" id="viewUser" value="viewUser">View User</button>
+            <img src="/image/winter.gif" id="loading" style="display: none;">
+            <div id="userList" class="card" style="display: none;"></div>
+            <form>
+                <button class="btn" id="logout" value="Logout">Logout</button>
+            </form>
+        </section>
+    </div>
+</body>
+</html>

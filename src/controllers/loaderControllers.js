@@ -1,10 +1,4 @@
-const {
-  findData,
-  findOneData,
-  findAndUpdate,
-  findandDelete,
-  createData,
-} = require('../models/loader/loaderMethod');
+const { findData, createData } = require('../models/loader/loaderMethod');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -33,41 +27,6 @@ const checkData = (user) => async (req, res) => {
       message: `Error: Data with parameters: ${JSON.stringify(
         req.query
       )} not retrieved`,
-      'Error details': e,
-    });
-  }
-};
-
-// @route   GET loader/:Id [Not Implemented]
-// @desc    Get one data by ID
-// @access  Public
-const checkOneData = (user) => async (req, res) => {
-  try {
-    let response = await findOneData(user, parseInt(req.params.id));
-    res.status(200).json({
-      message: `Data with ID: ${JSON.stringify(req.params.id)} retrieved`,
-      data: response,
-    });
-  } catch (e) {
-    res.status(404).json({
-      message: `Error: Data with ID: ${JSON.stringify(
-        req.params.id
-      )} not retrieved`,
-      'Error details': e,
-    });
-  }
-};
-
-// @route   DELETE loader/:Id [Not Implemented]
-// @desc    Delete one data by ID
-// @access  Public
-const deleteOneData = (user) => async (req, res) => {
-  try {
-    let response = await findandDelete(user, parseInt(req.params.id));
-    res.status(200).json({ message: 'Data deleted', data: response });
-  } catch (e) {
-    res.status(404).json({
-      message: `Error: Data with ID: ${req.params.id} not deleted`,
       'Error details': e,
     });
   }
@@ -114,21 +73,6 @@ const createNewData = (user) => async (req, res) => {
   }
 };
 
-// @route   PATCH api/ [Not Implemented]
-// @desc    Update selected data
-// @access  Public
-const updateData = (user) => async (req, res) => {
-  try {
-    let response = await findAndUpdate(user, req.params.id, req.body);
-    res.status(200).json({ message: 'Data Updated', data: response });
-  } catch (e) {
-    res.status(404).json({
-      message: `Error: Data not updated`,
-      'Error details': e,
-    });
-  }
-};
-
 // @route   POST loader/auth/login
 // @desc    Auth user(student, tutor, admin) and get token
 // @access  Public
@@ -145,7 +89,6 @@ const loginUser = (User) => async (req, res) => {
   //else
   try {
     let user = await User.findOne({ userName });
-
     if (!user) {
       return res
         .status(400)
@@ -164,6 +107,7 @@ const loginUser = (User) => async (req, res) => {
     const payload = {
       user: {
         id: user._id,
+        isAdmin: user.isAdmin,
       },
     };
 
@@ -225,26 +169,60 @@ const getLoggedInUser = (User) => async (req, res) => {
     // Get user from DB
     const user = await User.findById(req.user.id).select('-passwordHash');
 
-    let username = req.query.data || 'Test User';
-    res.status(200).render('user.hbs', {
-      title: user.userName,
-      time: user.createdAt,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      image: user.base64ImageSrc,
-    });
+    if (req.user.isAdmin == true) {
+      res.status(200).render('admin.hbs', {
+        title: user.userName,
+        time: user.createdAt,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        image: user.base64ImageSrc,
+      });
+    } else {
+      res.status(200).render('user.hbs', {
+        title: user.userName,
+        time: user.createdAt,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        image: user.base64ImageSrc,
+      });
+    }
   } catch (error) {
     console.log(error.message);
     res.status(500).send('Server Error.');
   }
 };
 
+// @route   GET loader/register
+// @desc    Serves static register page
+// @access  Public
+const registerStatic = (req, res) => {
+  res.render('register.hbs', { title: 'Register' });
+};
+
+// @route   GET loader/login
+// @desc    Serves static login page
+// @access  Public
+const loginStatic = (req, res) => {
+  res.render('login.hbs', { title: 'Login' });
+};
+
+// @route   GET loader/index
+// @desc    Serves static landing page
+// @access  Public
+const indexStatic = (req, res) => {
+  let message = '';
+  if (req.header('Referer') && req.query.data) {
+    message = `User: ${req.query.data} has been registered`;
+  }
+  res.render('index.hbs', { title: 'Home', message: message });
+};
+
 module.exports = {
+  indexStatic,
+  loginStatic,
   checkData,
-  checkOneData,
   createNewData,
-  updateData,
-  deleteOneData,
   loginUser,
   getLoggedInUser,
+  registerStatic,
 };

@@ -35,3 +35,44 @@ if (document.getElementById('logout')) {
     Redirect();
   });
 }
+
+//Will work on admin page
+async function getUser(url) {
+  try {
+    let data = await fetch(url);
+    let response = await data.json();
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
+if (document.getElementById('viewUser')) {
+  let viewUser = document.getElementById('viewUser');
+  let loading = document.getElementById('loading');
+  let userList = document.getElementById('userList');
+  viewUser.addEventListener('click', async () => {
+    try {
+      loading.style.display = '';
+      let data = await getUser(
+        `${window.location.origin}/loader/auth/userList`
+      );
+      loading.style.display = 'none';
+      let ul = document.createElement('ul');
+      ul.innerHTML = '';
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          let li = document.createElement('li');
+          li.innerHTML = `User ${i + 1} is ${data[i].firstName} ${
+            data[i].lastName
+          }, with Username: <strong>${data[i].userName}</strong>`;
+          ul.appendChild(li);
+        }
+        userList.innerHTML = '';
+        userList.style.display = '';
+        userList.appendChild(ul);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+}

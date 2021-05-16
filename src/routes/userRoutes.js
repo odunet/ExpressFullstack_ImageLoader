@@ -5,7 +5,7 @@ const { check } = require('express-validator');
 const path = require('path');
 
 // Require middleware
-const auth = require('../middleware/userAuth');
+const auth = require('../middleware/userRoute/userAuth');
 
 //Create schema
 const user = require('../models/user');

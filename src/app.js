@@ -13,6 +13,10 @@ const { PORT } = process.env;
 const userRoutes = require('./routes/userRoutes');
 const loaderRoutes = require('./routes/loaderRoutes');
 
+//Seeders
+const { seedAdmin } = require('./seeders/admin');
+seedAdmin();
+
 //initialize express
 const app = express();
 
