@@ -2,11 +2,12 @@
   "name": "zurimongoapp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon ./src/app.js",
+    "build": "echo would have built here"
   },
   "repository": {
     "type": "git",
