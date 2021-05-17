@@ -19,7 +19,7 @@
     "url": "https://github.com/odunet/zuriMongoApp/issues"
   },
   "engines": {
-    "node": "v14.16.1"
+    "node": "14.16.1"
   },
   "homepage": "https://github.com/odunet/zuriMongoApp#readme",
   "dependencies": {
