@@ -121,6 +121,7 @@ const loginUser = (User) => async (req, res) => {
         if (err) throw err;
 
         //Set in cookie and return token as JSON
+        // res.setHeader('x-auth-token', token);
         // res.cookie('x-auth-token', token, {
         //   maxAge: 86_400_400,
         //   sameSite: 'none',
@@ -144,6 +145,7 @@ const loginUser = (User) => async (req, res) => {
 
         //Redirect to auth route using cookie
         //Set in cookie
+        res.setHeader('x-auth-token', token);
         res.cookie('x-auth-token', token, {
           maxAge: 86_400_400,
           sameSite: 'none',
