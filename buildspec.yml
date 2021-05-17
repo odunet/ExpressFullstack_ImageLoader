@@ -1,10 +1,10 @@
-version 0.2
+version: 0.2
 
 phases:
   install:
     commands:
-      #install dependencies for running tests
+      # Install dependencies needed for running tests
       - npm install
 
-      #upgrade AWS CLI to the lastest version
+      # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
