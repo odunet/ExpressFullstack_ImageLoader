@@ -145,14 +145,12 @@ const loginUser = (User) => async (req, res) => {
 
         //Redirect to auth route using cookie
         //Set in cookie
-        res.setHeader('x-auth-token', token);
         res.cookie('x-auth-token', token, {
           maxAge: 86_400_400,
-          sameSite: 'none',
+          // sameSite: 'none',
           // httpOnly: true,
-          secure: true,
+          // secure: true,
         });
-
         //Redirect to auth page
         res.status(200).redirect('/loader/auth/user');
       }
