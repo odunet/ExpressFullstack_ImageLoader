@@ -149,7 +149,7 @@ const loginUser = (User) => async (req, res) => {
           maxAge: 86_400_400,
           sameSite: 'none',
           httpOnly: true,
-          secure: true,
+          // secure: true,
         });
         //Redirect to auth page
         res.status(200).redirect('/loader/auth/user');
