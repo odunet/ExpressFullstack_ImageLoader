@@ -147,8 +147,8 @@ const loginUser = (User) => async (req, res) => {
         //Set in cookie
         res.cookie('x-auth-token', token, {
           maxAge: 86_400_400,
-          sameSite: 'none',
           httpOnly: true,
+          // sameSite: 'none',
           // secure: true,
         });
         //Redirect to auth page
