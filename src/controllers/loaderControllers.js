@@ -10,12 +10,15 @@ require('dotenv').config();
 const checkData = (user) => async (req, res) => {
   try {
     if (`${JSON.stringify(req.query)}` === '{}') {
-      let response = await findData(user);
+      let response = await user
+        .find()
+        .select(['-passwordHash', '-binaryImageSrc']);
       res.status(200).json({
         message: `All data retrieved`,
         data: response,
       });
     } else {
+      //Using custom `findData` function
       let response = await findData(user, req.query);
       res.status(200).json({
         message: `Data with parameters: ${JSON.stringify(req.query)} retrieved`,

@@ -20,12 +20,14 @@ function deleteCookie(name) {
 }
 */
 
-//function redirect
+/*
+Function to redirect to specified page
 function Redirect() {
   window.location = `${window.location.origin}/loader/index`;
 }
+*/
 
-//Will work on admin page
+//Will work on admin page - To get user's list
 async function getUser(url) {
   try {
     let data = await fetch(url);
