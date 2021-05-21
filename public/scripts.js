@@ -56,6 +56,31 @@ if (document.getElementById('viewUser')) {
           li.innerHTML = `User ${i + 1} is ${data[i].firstName} ${
             data[i].lastName
           }, with Username: <strong>${data[i].userName}</strong>`;
+          //Create the delete button
+          let button = document.createElement('button');
+          button.classList.add('btn');
+          button.classList.add('delete');
+          button.innerHTML = 'Delete';
+          //Event listener for deleting user
+          button.addEventListener('click', async (e) => {
+            try {
+              let deleteData = await fetch(
+                `${window.location.origin}/loader/auth/deleteUser`,
+                {
+                  method: 'POST',
+                  body: JSON.stringify({ userName: data[i].userName }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
+              viewUser.click();
+            } catch (err) {
+              console.log(err);
+            }
+          });
+
+          li.appendChild(button);
           ul.appendChild(li);
         }
         userList.innerHTML = '';
@@ -95,7 +120,6 @@ if (document.getElementById('submitLogin')) {
       }
 
       let result = await response.json();
-      console.log(result);
     } catch (err) {
       console.log(`Error: ${err}`);
     }

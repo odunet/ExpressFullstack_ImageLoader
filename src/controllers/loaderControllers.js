@@ -12,7 +12,7 @@ const checkData = (user) => async (req, res) => {
     if (`${JSON.stringify(req.query)}` === '{}') {
       let response = await user
         .find()
-        .select(['-passwordHash', '-binaryImageSrc']);
+        .select(['-passwordHash', '-binaryImageSrc', '-base64ImageSrc']);
       res.status(200).json({
         message: `All data retrieved`,
         data: response,
@@ -213,7 +213,24 @@ const getLoggedInUser = (User) => async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).send('Server Error.');
+    res.status(500).send('Server Error');
+  }
+};
+
+// @route   POST api/adminAuth/deleteUser
+// @desc    Auth user(student, tutor, admin)
+// @access  Public
+const deleteUser = (User) => async (req, res) => {
+  try {
+    // Get user from DB
+    const user = await User.deleteOne({ userName: req.body.userName });
+    res.status(200).json({
+      statusCode: 200,
+      message: `User ${req.body.userName} deleted`,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Server Error');
   }
 };
 
@@ -253,4 +270,5 @@ module.exports = {
   getLoggedInUser,
   registerStatic,
   logoutUser,
+  deleteUser,
 };

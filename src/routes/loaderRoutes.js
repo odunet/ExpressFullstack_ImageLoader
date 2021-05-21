@@ -39,7 +39,17 @@ router.get('/auth/user', auth, loaderControllers.getLoggedInUser(loader));
 // @access  Public
 router.get('/register', loaderControllers.registerStatic);
 
-// @route   GET loader/auth/userList
+// @route   PSOT loader/auth/deleteuser
+// @desc    Delete a user who's userName is passed
+// @access  Public
+router.post(
+  '/auth/deleteUser',
+  [check('userName', 'Username not valid').exists()],
+  adminAuth,
+  loaderControllers.deleteUser(loader)
+);
+
+// @route   POST loader/auth/userList
 // @desc    Serves static list of users
 // @access  Public
 router.get('/auth/userList', adminAuth, loaderControllers.checkData(loader));
