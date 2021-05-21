@@ -8,7 +8,8 @@ if (document.getElementById('file')) {
   });
 }
 
-//Remove cookie
+/*
+A function to remove cookie [Not Implemented in application]
 function setCookie(name, value, days) {
   var d = new Date();
   d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * days);
@@ -17,23 +18,11 @@ function setCookie(name, value, days) {
 function deleteCookie(name) {
   setCookie(name, '', -1);
 }
+*/
 
 //function redirect
 function Redirect() {
   window.location = `${window.location.origin}/loader/index`;
-}
-
-//Will work only on login page where logout button exists
-if (document.getElementById('logout')) {
-  let logout = document.getElementById('logout');
-
-  logout.addEventListener('click', (e) => {
-    e.preventDefault();
-    deleteCookie('x-auth-token');
-
-    //Redirect to landing page
-    Redirect();
-  });
 }
 
 //Will work on admin page
@@ -73,6 +62,40 @@ if (document.getElementById('viewUser')) {
       }
     } catch (err) {
       console.log(err);
+    }
+  });
+}
+
+//Submitting login form
+if (document.getElementById('submitLogin')) {
+  let usr = document.getElementById('usr');
+  let pwd = document.getElementById('pwd');
+  let submitLogin = document.getElementById('submitLogin');
+  submitLogin.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      let response = await fetch(`loader/../auth/login`, {
+        method: 'POST',
+        body: JSON.stringify({
+          userName: usr.value,
+          password: pwd.value,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      //Store token in local storage || server also stores this in cookie
+      if (response.headers.get('x-auth-token')) {
+        localStorage.setItem(
+          'x-auth-token',
+          response.headers.get('x-auth-token')
+        );
+      }
+
+      let result = await response.json();
+      console.log(result);
+    } catch (err) {
+      console.log(`Error: ${err}`);
     }
   });
 }

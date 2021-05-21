@@ -6,18 +6,6 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 
-//Set storage in local disc
-// const storage = multer.diskStorage({
-//   destination: './public/uploads/',
-//   filename: function (req, file, cb) {
-//     cb(
-//       null,
-//       file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-//     );
-//   },
-// });
-// const upload = multer({ storage: storage });
-
 //Set storage in buffer
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -80,5 +68,10 @@ router.post(
   ],
   loaderControllers.loginUser(loader)
 );
+
+// @route   POST loader/auth/login
+// @desc    Register user(user, admin) and redirect to homepage
+// @access  Public
+router.get('/auth/logout', auth, loaderControllers.logoutUser(loader));
 
 module.exports = router;

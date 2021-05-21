@@ -64,7 +64,7 @@ const createNewData = (user) => async (req, res) => {
 
     let response = await createData(user, req.body);
     // Redirect to index page
-    res.status(200).redirect('/loader/index?data=' + req.body.userName);
+    res.status(200).redirect('/loader/index?dataIn=' + req.body.userName);
   } catch (e) {
     res.status(404).json({
       message: `Error: Data not created`,
@@ -147,9 +147,9 @@ const loginUser = (User) => async (req, res) => {
         //Set in cookie
         res.cookie('x-auth-token', token, {
           maxAge: 86_400_400,
-          // sameSite: 'none',
-          // httpOnly: true,
-          // secure: true,
+          sameSite: 'none',
+          httpOnly: true,
+          secure: true,
         });
         //Redirect to auth page
         res.status(200).redirect('/loader/auth/user');
@@ -161,13 +161,35 @@ const loginUser = (User) => async (req, res) => {
   }
 };
 
+// @route   GET loader/auth/logout
+// @desc    Auth user(student, tutor, admin) and get token
+// @access  Public
+const logoutUser = (User) => async (req, res) => {
+  // Get user from DB
+  try {
+    const user = await User.findById(req.user.id)
+      .select('-passwordHash')
+      .select('-binaryImageSrc');
+    res.cookie('x-auth-token', 'Expired', {
+      expires: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    });
+    //Redirect to auth page
+    res.status(200).redirect('/loader/index?dataOut=' + user.userName);
+  } catch (err) {
+    res.status(401).json({ error: err });
+  }
+};
+
 // @route   GET api/auth/
 // @desc    Auth user(student, tutor, admin)
 // @access  Public
 const getLoggedInUser = (User) => async (req, res) => {
   try {
     // Get user from DB
-    const user = await User.findById(req.user.id).select('-passwordHash');
+    const user = await User.findById(req.user.id)
+      .select('-passwordHash')
+      .select('-binaryImageSrc');
 
     if (req.user.isAdmin == true) {
       res.status(200).render('admin.hbs', {
@@ -211,8 +233,10 @@ const loginStatic = (req, res) => {
 // @access  Public
 const indexStatic = (req, res) => {
   let message = '';
-  if (req.header('Referer') && req.query.data) {
-    message = `User: ${req.query.data} has been registered`;
+  if (req.header('Referer') && (req.query.dataIn || req.query.dataOut)) {
+    message = req.query.dataIn
+      ? `User: ${req.query.dataIn} has been registered`
+      : `User: ${req.query.dataOut} has been Loged Out`;
   }
   res.render('index.hbs', { title: 'Home', message: message });
 };
@@ -225,4 +249,5 @@ module.exports = {
   loginUser,
   getLoggedInUser,
   registerStatic,
+  logoutUser,
 };
